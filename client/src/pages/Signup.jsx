@@ -1,16 +1,26 @@
 import { useForm } from "react-hook-form";
-import axios from "axios";
+import {useMutation} from "@tanstack/react-query"
+import axios from "axios"
+import { useNavigate } from "react-router-dom";
+
 function Signup() {
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm();
-  const onsubmit = async (data) => {
-    console.log(data);
-    await axios
-      .post("http://localhost:8000/api/auth/signup", data)
-      .then((res) => console.log(res));
+  const submit = (data)=>{
+    axios.post("http://localhost:8000/api/auth/signup" , data).then((res)=>{
+      localStorage.setItem("user",res.data._id)
+      navigate("/")
+    })
+  }
+  const{mutateAsync} = useMutation({
+    mutationFn:submit,
+  })
+  const onsubmit = (data) => {
+    mutateAsync(data)
   };
   return (
     <div className="flex items-center justify-center h-screen">

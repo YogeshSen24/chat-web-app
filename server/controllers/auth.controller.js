@@ -14,7 +14,7 @@ const login = asyncHandler(async (req, res) => {
   if (!isValid) res.status(401).end("Invalid Password!!!");
   const cookie = generateTokenAndSaveCookie(String(user._id), res);
   if (cookie) {
-    res.send(user._id);
+    res.send(user);
   }
 });
 
@@ -46,7 +46,8 @@ const signup = asyncHandler(async (req, res) => {
   if (user) {
     generateTokenAndSaveCookie(user._id, res);
     await user.save();
-    res.status(200).send("User Created");
+    const createdUser = await User.findById(user._id).select('-password')
+    res.status(200).send(createdUser);
   }
 });
 

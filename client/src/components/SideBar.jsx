@@ -1,24 +1,14 @@
-// import {FetchData} from "../hooks/useFetch.js"
-// import {useQuery} from "@tanstack/react-query"
+
+import {NavLink} from "react-router-dom"
 import axios from "axios";
+import { useEffect, useState } from "react";
 function SideBar() {
-  // const {data , isPending , error} = useQuery(
-  //   {
-  //       queryKey:["sidebar"],
-  //       queryFn:async()=>{
-  //           await fetch("http://localhost:8000/api/users")
-  //       },
-  //   })
-  //   console.log(data , isPending , error);
-  // const [data ,error] = FetchData("api/user/","sidebar")
-  // if(isPending) console.log("loading");
-  // if(data) console.log(data);
-  // if(error) console.log(error);
-  (async () => {
-    await axios
-      .get("http://localhost:8000/api/users")
-      .then((res) => console.log(res));
-  })();
+  const [data , setData] = useState()
+  useEffect(()=>{
+     axios
+    .get("http://localhost:8000/api/users")
+    .then((res) => setData(res.data));
+  },[])
   return (
     <div className="drawer w-1/4 ">
       <input id="my-drawer" type="checkbox" className="drawer-toggle" />
@@ -53,12 +43,22 @@ function SideBar() {
           className="drawer-overlay"
         ></label>
         <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
-          <li>
-            <a>Sidebar Item 1</a>
+          {
+            data?.map((item)=>(
+          <li className="border-b " key={item._id}>
+            <NavLink to={`/${item._id}`}>
+            <div className="flex gap-3 items-center ">
+              <div>
+              <img src="https://tse2.mm.bing.net/th?id=OIP.j2pu0aEsquFrq7yH3rXpAgHaHb&pid=Api&P=0&h=220" className="aspect-square w-14 rounded-full" alt="" />
+              </div>
+              <div>
+              <h2 className="text-xl font-bold">{item.name}</h2>
+              </div>
+            </div>
+            </NavLink>
           </li>
-          <li>
-            <a>Sidebar Item 2</a>
-          </li>
+            ))
+          }
         </ul>
       </div>
     </div>

@@ -4,8 +4,8 @@ import { asyncHandler } from "../utils/asyncHandler.util.js";
 
 const sendMessage = asyncHandler(async (req, res, next) => {
   const { id: receiverId } = req.params;
-  const { message } = req.body;
-  const senderId = req.user._id;
+  const { sender , message } = req.body;
+  const senderId = sender;
   let conversastion = await Conversation.findOne({
     users: { $all: [senderId, receiverId] },
   });
@@ -31,7 +31,8 @@ const sendMessage = asyncHandler(async (req, res, next) => {
 
 const getMessage = asyncHandler(async (req, res) => {
   const { id: receiverId } = req.params;
-  const senderId = req.body._id;
+  const {sender} = req.body
+  const senderId = sender;
   const conversastion = await Conversation.findOne({
     users: { $in: [senderId, receiverId]},
   }).populate("messages");
