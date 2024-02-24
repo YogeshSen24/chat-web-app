@@ -3,10 +3,11 @@ import {NavLink} from "react-router-dom"
 import axios from "axios";
 import { useEffect, useState } from "react";
 function SideBar() {
+  const user = localStorage.getItem("user")
   const [data , setData] = useState()
   useEffect(()=>{
      axios
-    .get("http://localhost:8000/api/users")
+    .get(`http://localhost:8000/api/users/${user}`)
     .then((res) => setData(res.data));
   },[])
   return (

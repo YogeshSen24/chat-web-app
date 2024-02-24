@@ -1,4 +1,36 @@
+import { useEffect } from "react";
+import io from "socket.io-client";
 function Home() {
+  //just checking the socket connection
+  const socket = io("http://localhost:8000/");
+
+  useEffect(() => {
+    socket.connect();
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
+
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("Connected to server");
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from server");
+    });
+
+    socket.on("message", (message) => {
+      console.log("Received message: ", message);
+    });
+
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+      socket.off("message");
+    };
+  }, []);
+  
   return (
     <div className="shadow-2xl p-5 w-full">
       <section className="text-gray-600 body-font">

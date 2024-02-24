@@ -9,7 +9,7 @@ function Chat() {
   const { receiver } = useParams();
   const [conversation, setConversation] = useState();
   const [message, setMessage] = useState();
-  var user = localStorage.getItem("user")
+  var user = localStorage.getItem("user");
 
   const sendMessage = async () => {
     try {
@@ -48,19 +48,15 @@ function Chat() {
     fetchData();
   }, []);
   return (
-    <div className="shadow-2xl p-5 m-5 w-full">
-      <div className="w-full flex-col-reverse h-5/6 mb-10 overflow-y-scroll">
+    <div className="shadow-2xl  w-full p-5 m-5 ">
+      <div className=" w-full h-5/6 mb-10 overflow-y-scroll">
         {conversation?.data?.messages.map((item) => (
-            <div
-            key={item._id}
-              className={`chat chat-${
-                receiver === item.receiverId ? "end" : "start"
-              }`}
-            >
-              <div className="chat-bubble chat-bubble-primary">
-                {item.message}
-              </div>
-            </div>
+          <div key={item._id}
+            className={`chat chat-${
+              receiver === item.receiverId ? "start" : "end" 
+            }`}>
+          <div className="chat-bubble chat-bubble-primary">{item.message}</div>
+        </div>
         ))}
       </div>
       <div className="flex bg-white w-full justify-between gap-3">

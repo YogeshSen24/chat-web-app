@@ -4,6 +4,6 @@ import {getUser} from "../controllers/user.controller.js"
 
 const router = express.Router()
 
-router.get("/",getUser) //veryUser middleware is temporary unused
+router.get("/:id",getUser) //veryUser middleware is temporary unused
 
 export default router
