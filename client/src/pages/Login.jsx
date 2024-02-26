@@ -3,9 +3,12 @@ import { useForm } from "react-hook-form";
 import {useMutation} from "@tanstack/react-query"
 import axios from "axios"
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserContext } from "../context/UserContextProvider.jsx"
 
 function Login() {
   const navigate = useNavigate()
+  const {setUser} = useContext(UserContext)
   const {
     register,
     handleSubmit,
@@ -14,6 +17,7 @@ function Login() {
   const submit = (data)=>{
     axios.post("http://localhost:8000/api/auth/login" , data).then((res)=>{
       // console.log(res.data._id);
+      setUser(res.data)
       localStorage.setItem("user",res.data._id)
       navigate("/")
     })

@@ -1,36 +1,12 @@
-import { useEffect } from "react";
-import io from "socket.io-client";
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 function Home() {
-  //just checking the socket connection
-  const socket = io("http://localhost:8000/");
-
-  useEffect(() => {
-    socket.connect();
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
-    socket.on("connect", () => {
-      console.log("Connected to server");
-    });
-
-    socket.on("disconnect", () => {
-      console.log("Disconnected from server");
-    });
-
-    socket.on("message", (message) => {
-      console.log("Received message: ", message);
-    });
-
-    return () => {
-      socket.off("connect");
-      socket.off("disconnect");
-      socket.off("message");
-    };
-  }, []);
-  
+  const [data , setData] = useState(null)
+  useEffect(()=>{
+    const id = localStorage.getItem("user")
+    axios.get(`http://localhost:8000/api/users/${id}`).then((res)=>setData(res.data[0]))
+  },[])
   return (
     <div className="shadow-2xl p-5 w-full">
       <section className="text-gray-600 body-font">
@@ -42,7 +18,7 @@ function Home() {
           />
           <div className="text-center lg:w-2/3 w-full">
             <h1 className="title-font sm:text-4xl text-3xl mb-4 font-medium text-gray-900">
-              Hi , Yogesh Sen
+              Hi , {data?.name}
             </h1>
             <p className="font-medium leading-relaxed">
               Welcome to ChatConnect, your ultimate messaging companion! We are

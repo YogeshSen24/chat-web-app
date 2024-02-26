@@ -7,7 +7,7 @@ function SideBar() {
   const [data , setData] = useState()
   useEffect(()=>{
      axios
-    .get(`http://localhost:8000/api/users/${user}`)
+    .get(`http://localhost:8000/api/users/others/${user}`)
     .then((res) => setData(res.data));
   },[])
   return (
