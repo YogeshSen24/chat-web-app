@@ -1,15 +1,17 @@
 // import axios from "axios";
 import { FiSend } from "react-icons/fi";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { SocketContext } from "../context/SocketContextProvider.jsx";
 
 function Chat() {
   const { receiver } = useParams();
-  const [conversation, setConversation] = useState();
-  const [message, setMessage] = useState();
+  const [conversation, setConversation] = useState([]);
+  const [message, setMessage] = useState("");
   var user = localStorage.getItem("user");
+  const { socket } = useContext(SocketContext);
 
   const sendMessage = async () => {
     try {
@@ -17,6 +19,8 @@ function Chat() {
         message,
         sender: user,
       });
+      socket.emit("message", message);
+      setMessage("");
     } catch (error) {
       console.log(error);
     }
@@ -39,24 +43,37 @@ function Chat() {
             sender: user,
           }
         );
-        setConversation(res);
+        setConversation(res.data.messages);
       } catch (error) {
         console.log(error);
       }
     };
 
     fetchData();
-  }, []);
+
+    socket?.on(
+      "newMessage",
+      (newMessage) => {
+        setConversation([...conversation, newMessage]);
+        return () => socket?.off(newMessage);
+      },
+      [socket, setConversation, conversation]
+    );
+  });
   return (
     <div className="shadow-2xl  w-full p-5 m-5 ">
       <div className=" w-full h-5/6 mb-10 overflow-y-scroll">
-        {conversation?.data?.messages.map((item) => (
-          <div key={item._id}
+        {conversation?.map((item) => (
+          <div
+            key={item._id}
             className={`chat chat-${
-              receiver === item.receiverId ? "start" : "end" 
-            }`}>
-          <div className="chat-bubble chat-bubble-primary">{item.message}</div>
-        </div>
+              receiver === item.receiverId ? "start" : "end"
+            }`}
+          >
+            <div className="chat-bubble chat-bubble-primary">
+              {item.message}
+            </div>
+          </div>
         ))}
       </div>
       <div className="flex bg-white w-full justify-between gap-3">

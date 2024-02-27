@@ -6,11 +6,15 @@ import { io } from "socket.io-client";
 const SocketContext = createContext();
 function SocketContextProvider({ children }) {
   const [socket, setSocket] = useState(null);
+  const [activeUsers, setActiveUsers] = useState([]);
   const { user } = useContext(UserContext);
+  const id = localStorage.getItem("user")
 
   useEffect(() => {
     if (user) {
-      const client = io("http://localhost:8000/");
+      const client = io("http://localhost:8000/",{
+        query:{userId : id}
+      });
       setSocket(client);
     }
   }, [user]);
@@ -29,6 +33,9 @@ function SocketContextProvider({ children }) {
       socket.on("message", (message) => {
         console.log("Received message: ", message);
       });
+      socket.on("onlineUsers",(users)=>{
+        setActiveUsers(users);
+      })
 
       return () => {
         socket.disconnect();
@@ -37,10 +44,10 @@ function SocketContextProvider({ children }) {
         socket.off("message");
       };
     }
-  }, [socket]);
+  }, [user]);
 
   return (
-    <SocketContext.Provider value={{ socket }}>
+    <SocketContext.Provider value={{ socket , activeUsers }}>
       {children}
     </SocketContext.Provider>
   );

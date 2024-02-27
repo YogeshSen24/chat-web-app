@@ -1,7 +1,7 @@
 import { useForm } from "react-hook-form";
 import {useMutation} from "@tanstack/react-query"
 import axios from "axios"
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
 import { useContext } from "react";
 import {UserContext} from "../context/UserContextProvider.jsx"
 
@@ -137,7 +137,7 @@ function Signup() {
           Sign up
         </button>
         <p className="text-xs text-gray-500 mt-3">
-          already have an account ? Login
+        <Link to="/login" className="text-blue-400">already have an account ? Login</Link>
         </p>
       </form>
     </div>

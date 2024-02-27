@@ -1,6 +1,7 @@
 import Message from "../models/message.model.js";
 import Conversation from "../models/conversation.model.js";
 import { asyncHandler } from "../utils/asyncHandler.util.js";
+import { getUserSocketId ,io } from "../socket.js";
 
 const sendMessage = asyncHandler(async (req, res, next) => {
   const { id: receiverId } = req.params;
@@ -26,7 +27,10 @@ const sendMessage = asyncHandler(async (req, res, next) => {
   //   await conversastion.save()
   //   await newMessage.save()
   await Promise.all([conversastion.save(), newMessage.save()]);
+  const receiver = getUserSocketId(receiverId)
+  io.to(receiver).emit("newMessage",newMessage)
   res.status(200).send("message send successfully!!!");
+
 });
 
 const getMessage = asyncHandler(async (req, res) => {
