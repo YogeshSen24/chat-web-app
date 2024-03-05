@@ -1,10 +1,13 @@
 import { useForm } from "react-hook-form";
 import {useMutation} from "@tanstack/react-query"
 import axios from "axios"
-import { useNavigate } from "react-router-dom";
+import { useNavigate , Link} from "react-router-dom";
+import { useContext } from "react";
+import {UserContext} from "../context/UserContextProvider.jsx"
 
 function Signup() {
   const navigate = useNavigate()
+  const {setUser} = useContext(UserContext)
   const {
     register,
     handleSubmit,
@@ -12,6 +15,7 @@ function Signup() {
   } = useForm();
   const submit = (data)=>{
     axios.post("http://localhost:8000/api/auth/signup" , data).then((res)=>{
+      setUser(res.data)
       localStorage.setItem("user",res.data._id)
       navigate("/")
     })
@@ -133,7 +137,7 @@ function Signup() {
           Sign up
         </button>
         <p className="text-xs text-gray-500 mt-3">
-          already have an account ? Login
+        <Link to="/login" className="text-blue-400">already have an account ? Login</Link>
         </p>
       </form>
     </div>

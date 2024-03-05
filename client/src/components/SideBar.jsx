@@ -1,13 +1,15 @@
 
 import {NavLink} from "react-router-dom"
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { SocketContext } from "../context/SocketContextProvider";
 function SideBar() {
   const user = localStorage.getItem("user")
   const [data , setData] = useState()
+  const {activeUsers} = useContext(SocketContext)
   useEffect(()=>{
      axios
-    .get(`http://localhost:8000/api/users/${user}`)
+    .get(`http://localhost:8000/api/users/others/${user}`)
     .then((res) => setData(res.data));
   },[])
   return (
@@ -54,6 +56,7 @@ function SideBar() {
               </div>
               <div>
               <h2 className="text-xl font-bold">{item.name}</h2>
+              <p>{activeUsers.includes(item._id)?"active" : "inactive"}</p>
               </div>
             </div>
             </NavLink>
