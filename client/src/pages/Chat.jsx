@@ -8,7 +8,7 @@ import { SocketContext } from "../context/SocketContextProvider.jsx";
 
 function Chat() {
   const { receiver } = useParams();
-  const [receiverData , setReceiverData] = useState(null)
+  const [receiverData, setReceiverData] = useState(null);
   const [conversation, setConversation] = useState([]);
   const [message, setMessage] = useState("");
   var userId = localStorage.getItem("user");
@@ -26,15 +26,25 @@ function Chat() {
       console.log(error);
     }
   };
+  const fetchReceiverData = async () => {
+    try {
+      let res = await axios.get(
+        `http://localhost:8000/api/users/${receiver}`
+      );
+      setReceiverData(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   const sendMessage = async () => {
     try {
       await axios.post(`http://localhost:8000/api/message/send/${receiver}`, {
         message,
         sender: userId,
       });
-socket.emit("message", message);
+      socket.emit("message", message);
       setMessage("");
-      fetchConversation(userId,receiver)
+      fetchConversation(userId, receiver);
     } catch (error) {
       console.log(error);
     }
@@ -49,33 +59,24 @@ socket.emit("message", message);
   };
 
   useEffect(() => {
-
-   
     fetchConversation();
-    socket?.on(
-      "newMessage",
-      (newMessage) => {
-        // console.log(newMessage)
-        setConversation([...conversation, newMessage]);
-        return () => socket?.off(newMessage);
-      },
-      [socket, setConversation, conversation]
-    );
-
-    const fetchReceiverData = async()=>{
-      try {
-        let res = await axios.get(`http://localhost:8000/api/users/${receiver}`)
-        setReceiverData(res.data)
-      } catch (error) {
-        console.log(error);
-      }
-    }
-    fetchReceiverData()
-  },[]);
+    fetchReceiverData();
+  }, [socket]);
+  socket?.on(
+    "newMessage",
+    (newMessage) => {
+      // console.log(newMessage)
+      setConversation([...conversation, newMessage]);
+      return () => socket?.off(newMessage);
+    },
+    [socket, setConversation, conversation]
+  );
   return (
     <div className="shadow-2xl  w-full p-5 m-5 ">
       <div className="w-screen p-5 bg-blue-500">
-        <h2 className="text-3xl font-bold">{receiverData&&receiverData[0]?.name}</h2>
+        <h2 className="text-3xl font-bold">
+          {receiverData && receiverData[0]?.name}
+        </h2>
       </div>
       <div className=" w-full h-5/6 mb-10 overflow-y-scroll">
         {conversation?.map((item) => (
@@ -85,9 +86,7 @@ socket.emit("message", message);
               receiver === item.receiverId ? "justify-end" : "justify-start"
             }`}
           >
-            <div className="p-2 bg-blue-600 rounded-3xl">
-              {item.message}
-            </div>
+            <div className="p-2 bg-blue-600 rounded-3xl">{item.message}</div>
           </div>
         ))}
       </div>
