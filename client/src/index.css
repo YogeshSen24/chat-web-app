@@ -1,3 +1,141 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root{
+    --primary-text-color : #FFFFFF; 
+    --secondary-text-color : #8671B8;
+    --bg-secondary : #DB4340;
+    --bg-primary : #343841;
+    --shadow-inset:inset rgba(0, 0, 0, 0.25) 0px 54px 55px,inset rgba(0, 0, 0, 0.12) 0px -12px 30px, inset rgba(0, 0, 0, 0.12) 0px 4px 6px,inset rgba(0, 0, 0, 0.17) 0px 12px 13px,inset rgba(0, 0, 0, 0.09) 0px -3px 5px;
+    --border-color:#1E2329;
+    --shadow :rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
+}
+
+::-webkit-scrollbar{
+    width: 1px;
+}
+h1,h2,h3 {
+    color: var(--primary-text-color) !important;
+}
+p , a {
+    color: var(--secondary-text-color) !important; 
+}
+li {
+    color: var(--secondary-text-color);
+    background-color: var(--bg-primary) !important;
+    border: 2px solid var(--border-color);
+    border-radius: 15px;
+}
+.menu li > *:not(ul, .menu-title, details, .btn):active, .menu li > *:not(ul, .menu-title, details, .btn).active, .menu li > details > summary:active {
+    /* --tw-bg-opacity: 1; */
+    background-color: transparent;
+    --tw-text-opacity: 0;
+    color:transparent;
+}
+
+#root{
+    overflow: hidden;
+}
+
+
+#home {
+    background-color: var(--bg-primary);
+    box-shadow: var(--shadow);
+}
+#layout{
+    background-color: var(--bg-primary);
+    height: 100vh;
+}
+#side-bar{
+    background-color: var(--bg-primary) !important;
+    box-shadow: var(--shadow-inset);
+    height: 95vh;
+    width: fit-content;
+
+}
+
+.btn-dark{
+    background-color: var(--bg-secondary);
+    color: var(--primary-text-color);
+    border-radius: 15px;
+    border: 2px solid transparent;
+}
+.btn-dark:hover{
+    border: 2px solid var(--border-color);
+}
+.btn-light{
+    border: 2px solid var(--bg-secondary);
+    border-radius: 15px;
+    color: var(--primary-text-color);
+    background-color: var(--bg-primary);
+}
+.btn-light:hover{
+    border: 2px solid var(--border-color);
+}
+
+#chat{
+    background-color: var(--bg-primary);
+    position: relative;
+}
+#chat-head{
+    background-color: var(--bg-primary);
+    border-radius: 15px;
+    box-shadow: var(--shadow);
+}
+.message{
+    background-color: var(--bg-primary);
+    border-radius: 15px;
+    color: var(--primary-text-color);
+    box-shadow: var(--shadow);
+    margin: 10px 2rem;
+}
+#message-container{
+    padding-bottom: 5rem;
+}
+.input-field{
+    background-color: var(--bg-primary) !important;
+    border-radius: 15px;
+    padding: 1rem 2rem;
+    box-shadow: var(--shadow-inset);
+}
+.receivers{
+    box-shadow: var(--shadow);
+}
+#message-box{
+    position: absolute;
+    bottom: 5px;
+    width: 100%;
+    color: white;
+}
+.sidebar-toggle{
+    width: 2rem;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+@media  (max-width : 768px) {
+    #chat{
+        width: 100%;
+    }
+    .menu{
+        width: 300px;
+    }
+    #layout{
+        padding: 1rem;
+    }
+}
+@media  (max-width : 425px) {
+    .sidebar-toggle{
+        width: 10px;
+        height: 100%;
+        border-radius: 15px;
+        overflow: hidden;
+    }
+    .message {
+        margin: 10px;
+    }
+}
+

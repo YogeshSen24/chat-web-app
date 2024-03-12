@@ -8,7 +8,7 @@ function Home() {
     axios.get(`http://localhost:8000/api/users/${id}`).then((res)=>setData(res.data[0]))
   },[])
   return (
-    <div className="shadow-2xl p-5 w-full">
+    <div id="home" className="shadow-2xl p-5 w-full">
       <section className="text-gray-600 body-font">
         <div className="container mx-auto flex px-5 py-auto items-center justify-center flex-col">
           <img
@@ -28,10 +28,10 @@ function Home() {
               Enjoy your time on ChatConnect, and happy chatting!
             </p>
             <div className="flex justify-center">
-              <button className="inline-flex text-white bg-indigo-500 border-0 py-2 px-6 focus:outline-none hover:bg-indigo-600 rounded text-lg">
+              <button  className="inline-flex btn-dark py-2 px-6 text-lg">
                 Setting
               </button>
-              <button className="ml-4 inline-flex text-gray-700 bg-gray-100 border-0 py-2 px-6 focus:outline-none hover:bg-gray-200 rounded text-lg">
+              <button className="ml-4 inline-flex btn-light py-2 px-6 text-lg">
                 Profile
               </button>
             </div>
