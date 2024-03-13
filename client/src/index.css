@@ -102,6 +102,9 @@ li {
 .receivers{
     box-shadow: var(--shadow);
 }
+.pop-out{
+    box-shadow: var(--shadow);
+}
 #message-box{
     position: absolute;
     bottom: 5px;
@@ -115,16 +118,28 @@ li {
     justify-content: center;
     align-items: center;
 }
+.mobile{
+    display: none;
+}
 
 @media  (max-width : 768px) {
     #chat{
         width: 100%;
     }
     .menu{
-        width: 300px;
+        width: 100%;
     }
     #layout{
         padding: 1rem;
+    }
+    .hide{
+        display: none;
+    }
+    .mobile{
+        display: block;
+    }
+    #side-bar{
+        width: 100%;
     }
 }
 @media  (max-width : 425px) {
@@ -136,6 +151,13 @@ li {
     }
     .message {
         margin: 10px;
+    }
+    .hide{
+        display: none;
+    }
+    .mobile{
+        display: block;
+        width: 100% !important;
     }
 }
 

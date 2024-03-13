@@ -1,21 +1,24 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import axios from "axios";
-import { IoIosArrowForward ,IoIosArrowBack  } from "react-icons/io";
 import { useContext, useEffect, useState } from "react";
 import { SocketContext } from "../context/SocketContextProvider";
+import { IoMdArrowBack } from "react-icons/io";
 function SideBar() {
   const user = localStorage.getItem("user");
   const [data, setData] = useState();
   const { activeUsers } = useContext(SocketContext);
-  const [sidebarOpen , setSidebarOpen] = useState(false);
+  const navigate = useNavigate()
   useEffect(() => {
     axios
       .get(`http://localhost:8000/api/users/others/${user}`)
       .then((res) => setData(res.data));
   }, []);
   return (
-    <div id="side-bar" className="w-1/4 flex transition-all">
-      <ul className={`menu ${sidebarOpen?" w-80 transition-all p-4 min-h-full text-base-content":"hidden"} `}>
+    <div id="side-bar" className="w-1/4  transition-all">
+      <div className="mobile m-4">
+    <IoMdArrowBack onClick={()=>navigate("/")} className="w-10 h-10  rounded-full bg-white aspect-square mr-5 pop-out "/>
+      </div>
+      <ul className={`menu w-80 transition-all p-4 min-h-full text-base-content`}>
         {data?.map((item) => (
           <li className="receivers" key={item._id}>
             <NavLink to={`/${item._id}`}>
@@ -38,12 +41,6 @@ function SideBar() {
           </li>
         ))}
       </ul>
-      <div onClick={()=>setSidebarOpen(!sidebarOpen)} className={`sidebar-toggle text-white`}>
-          {
-            sidebarOpen?
-            <IoIosArrowBack />:<IoIosArrowForward/>
-          }
-      </div>
     </div>
   );
 }

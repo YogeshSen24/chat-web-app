@@ -2,10 +2,11 @@
 import { FiSend } from "react-icons/fi";
 import { useState, useEffect, useContext, useRef } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
 import { SocketContext } from "../context/SocketContextProvider.jsx";
 import { MdCircle } from "react-icons/md";
+import { IoMdArrowBack } from "react-icons/io";
 
 function Chat() {
   const { receiver } = useParams();
@@ -16,6 +17,7 @@ function Chat() {
   const { activeUsers } = useContext(SocketContext);
   var userId = localStorage.getItem("user");
   const { socket } = useContext(SocketContext);
+  const navigate = useNavigate()
   const fetchConversation = async () => {
     try {
       const res = await axios.post(
@@ -84,6 +86,7 @@ function Chat() {
   return (
     <div id="chat" className="w-full px-2 ">
       <div id="chat-head" className="flex p-5">
+          <IoMdArrowBack onClick={()=>navigate("/side-bar")} className="w-10 h-10 mobile rounded-full bg-white aspect-square mr-5" />
         <h2 className="text-3xl  font-bold">
           {receiverData && receiverData[0]?.name}
         </h2>

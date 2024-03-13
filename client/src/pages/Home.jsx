@@ -1,8 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
   const [data , setData] = useState(null)
+  const navigate = useNavigate()
   useEffect(()=>{
     const id = localStorage.getItem("user")
     axios.get(`http://localhost:8000/api/users/${id}`).then((res)=>setData(res.data[0]))
@@ -27,12 +29,9 @@ function Home() {
             <p className="mb-3">
               Enjoy your time on ChatConnect, and happy chatting!
             </p>
-            <div className="flex justify-center">
-              <button  className="inline-flex btn-dark py-2 px-6 text-lg">
-                Setting
-              </button>
-              <button className="ml-4 inline-flex btn-light py-2 px-6 text-lg">
-                Profile
+            <div className="flex justify-center mobile ">
+              <button onClick={()=>navigate("/side-bar")} className="inline-flex btn-dark py-2 px-6 text-lg">
+                Start a chat
               </button>
             </div>
           </div>
