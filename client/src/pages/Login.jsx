@@ -19,8 +19,8 @@ function Login() {
       // console.log(res.data._id);
       setUser(res.data)
       localStorage.setItem("user",res.data._id)
-      navigate("/")
-    })
+      
+    }).then(()=>navigate("/"))
   }
   const{mutateAsync} = useMutation({
     mutationFn:submit,

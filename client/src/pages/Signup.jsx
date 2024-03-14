@@ -17,8 +17,7 @@ function Signup() {
     axios.post("/api/auth/signup" , data).then((res)=>{
       setUser(res.data)
       localStorage.setItem("user",res.data._id)
-      navigate("/")
-    })
+    }).then(()=>navigate("/"))
   }
   const{mutateAsync} = useMutation({
     mutationFn:submit,
