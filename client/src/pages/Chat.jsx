@@ -21,7 +21,7 @@ function Chat() {
   const fetchConversation = async () => {
     try {
       const res = await axios.post(
-        `http://localhost:8000/api/message/${receiver}`,
+        `/api/message/${receiver}`,
         {
           sender: userId,
         }
@@ -34,7 +34,7 @@ function Chat() {
   const fetchReceiverData = async () => {
     try {
       let res = await axios.get(
-        `http://localhost:8000/api/users/${receiver}`
+        `/api/users/${receiver}`
       );
       setReceiverData(res.data);
     } catch (error) {
