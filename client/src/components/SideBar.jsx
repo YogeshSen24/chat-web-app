@@ -10,7 +10,7 @@ function SideBar() {
   const navigate = useNavigate()
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/users/others/${user}`)
+      .get(`/api/users/others/${user}`)
       .then((res) => setData(res.data));
   }, []);
   return (

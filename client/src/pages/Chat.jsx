@@ -43,7 +43,7 @@ function Chat() {
   };
   const sendMessage = async () => {
     try {
-      await axios.post(`http://localhost:8000/api/message/send/${receiver}`, {
+      await axios.post(`/api/message/send/${receiver}`, {
         message,
         sender: userId,
       });

@@ -15,7 +15,7 @@ function Login() {
     formState: { errors },
   } = useForm();
   const submit = (data)=>{
-    axios.post("http://localhost:8000/api/auth/login" , data).then((res)=>{
+    axios.post("/api/auth/login" , data).then((res)=>{
       // console.log(res.data._id);
       setUser(res.data)
       localStorage.setItem("user",res.data._id)

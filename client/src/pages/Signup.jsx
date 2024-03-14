@@ -14,7 +14,7 @@ function Signup() {
     formState: { errors },
   } = useForm();
   const submit = (data)=>{
-    axios.post("http://localhost:8000/api/auth/signup" , data).then((res)=>{
+    axios.post("/api/auth/signup" , data).then((res)=>{
       setUser(res.data)
       localStorage.setItem("user",res.data._id)
       navigate("/")

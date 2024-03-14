@@ -12,7 +12,7 @@ function SocketContextProvider({ children }) {
 
   useEffect(() => {
     if (user) {
-      const client = io("http://localhost:8000/",{
+      const client = io("https://yug-chat-app.onrender.com",{
         query:{userId : id}
       });
       setSocket(client);

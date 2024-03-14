@@ -7,7 +7,7 @@ function Home() {
   const navigate = useNavigate()
   useEffect(()=>{
     const id = localStorage.getItem("user")
-    axios.get(`http://localhost:8000/api/users/${id}`).then((res)=>setData(res.data[0]))
+    axios.get(`/api/users/${id}`).then((res)=>setData(res.data[0]))
   },[])
   return (
     <div id="home" className="shadow-2xl p-5 w-full">

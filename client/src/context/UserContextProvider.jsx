@@ -8,7 +8,7 @@ function UserContextProvider({ children }) {
     const id = localStorage.getItem("user");
     if (id) {
       axios
-        .get(`http://localhost:8000/api/users/${id}`)
+        .get(`/api/users/${id}`)
         .then((res) => setUser(res.data));
     }
 
