@@ -51,7 +51,7 @@ function Chat() {
         message,
         sender: userId,
       });
-      await socket.emit("message", message);
+      socket.emit("message", message);
       setMessage("");
       await fetchConversation(userId, receiver);
     } catch (error) {
@@ -72,15 +72,18 @@ function Chat() {
     fetchConversation();
     fetchReceiverData();
   }, [receiver ]);
-  socket?.on(
-    "newMessage",
-    (newMessage) => {
-      // console.log(newMessage)
-      setConversation([...conversation, newMessage]);
-      return () => socket?.off(newMessage);
-    },
-    [socket, setConversation, conversation]
-  );
+
+  useEffect(() => {
+    const handleNewMessage = (newMessage) => {
+      setConversation((prevConversation) => [...prevConversation, newMessage]);
+    };
+
+    socket?.on("newMessage", handleNewMessage);
+
+    return () => {
+      socket?.off("newMessage", handleNewMessage);
+    };
+  }, [socket]);
   
   const messageContainerRef = useRef(null); // Create a ref for the message container
 
