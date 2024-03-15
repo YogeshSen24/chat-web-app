@@ -32,7 +32,7 @@ function Chat() {
     } catch (error) {
       console.log(error);
     }
-  },[])
+  },[receiver])
   const fetchReceiverData = useCallback( async () => {
     try {
       let res = await axios.get(
