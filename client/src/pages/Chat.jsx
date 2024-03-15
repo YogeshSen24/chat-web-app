@@ -68,9 +68,10 @@ function Chat() {
   };
 
   useEffect(() => {
+    setConversation([])
     fetchConversation();
     fetchReceiverData();
-  }, [socket ]);
+  }, [socket , receiver ]);
   socket?.on(
     "newMessage",
     (newMessage) => {
