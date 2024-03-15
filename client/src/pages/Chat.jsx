@@ -44,7 +44,7 @@ function Chat() {
     } catch (error) {
       console.log(error);
     }
-  },[])
+  },[receiver])
   const sendMessage = useCallback( async () => {
     try {
       await axios.post(`/api/message/send/${receiver}`, {
@@ -57,7 +57,7 @@ function Chat() {
     } catch (error) {
       console.log(error);
     }
-  },[])
+  },[receiver])
 
   const { mutateAsync } = useMutation({
     mutationFn: sendMessage,
