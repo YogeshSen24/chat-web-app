@@ -16,8 +16,9 @@ function SocketContextProvider({ children }) {
         query:{userId : id}
       });
       setSocket(client);
+      client.emit("onlineUsers")
     }
-  }, [user]);
+  }, [user , id]);
 
   useEffect(() => {
     if (socket) {
@@ -44,7 +45,7 @@ function SocketContextProvider({ children }) {
         socket.off("message");
       };
     }
-  }, [user]);
+  }, [user, socket ]);
 
   return (
     <SocketContext.Provider value={{ socket , activeUsers }}>
