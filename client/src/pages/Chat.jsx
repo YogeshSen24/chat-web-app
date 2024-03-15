@@ -71,7 +71,7 @@ function Chat() {
     setConversation([])
     fetchConversation();
     fetchReceiverData();
-  }, [socket , receiver ]);
+  }, [receiver ]);
   socket?.on(
     "newMessage",
     (newMessage) => {
