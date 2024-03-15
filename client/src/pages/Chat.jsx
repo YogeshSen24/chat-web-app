@@ -1,6 +1,6 @@
 // import axios from "axios";
 import { FiSend } from "react-icons/fi";
-import { useState, useEffect, useContext, useRef } from "react";
+import { useState, useEffect, useContext, useRef, useCallback } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -15,10 +15,10 @@ function Chat() {
   const [conversation, setConversation] = useState([]);
   const [message, setMessage] = useState("");
   const { activeUsers } = useContext(SocketContext);
-  var userId = localStorage.getItem("user");
+  const userId = localStorage.getItem("user");
   const { socket } = useContext(SocketContext);
   const navigate = useNavigate()
-  const fetchConversation = async () => {
+  const fetchConversation = useCallback(async () => {
     try {
       const res = await axios.post(
         `/api/message/${receiver}`,
@@ -26,34 +26,38 @@ function Chat() {
           sender: userId,
         }
       );
-      setConversation(res.data.messages);
+      if(res){
+        setConversation(res.data.messages);
+      }
     } catch (error) {
       console.log(error);
     }
-  };
-  const fetchReceiverData = async () => {
+  },[message])
+  const fetchReceiverData = useCallback( async () => {
     try {
       let res = await axios.get(
         `/api/users/${receiver}`
       );
-      setReceiverData(res.data);
+      if(res){
+        setReceiverData(res.data);
+      }
     } catch (error) {
       console.log(error);
     }
-  };
-  const sendMessage = async () => {
+  },[message])
+  const sendMessage = useCallback( async () => {
     try {
       await axios.post(`/api/message/send/${receiver}`, {
         message,
         sender: userId,
       });
-      socket.emit("message", message);
+      await socket.emit("message", message);
       setMessage("");
-      fetchConversation(userId, receiver);
+      await fetchConversation(userId, receiver);
     } catch (error) {
       console.log(error);
     }
-  };
+  },[message])
 
   const { mutateAsync } = useMutation({
     mutationFn: sendMessage,
