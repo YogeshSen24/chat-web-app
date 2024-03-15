@@ -5,8 +5,8 @@ import { getUserSocketId ,io } from "../socket.js";
 
 const sendMessage = asyncHandler(async (req, res, next) => {
   const { id: receiverId } = req.params;
-  const { sender , message } = req.body;
-  const senderId = sender;
+  const { message } = req.body;
+  const senderId = req.user._id;
   let conversastion = await Conversation.findOne({
     users: { $all: [senderId, receiverId] },
   });
@@ -28,17 +28,18 @@ const sendMessage = asyncHandler(async (req, res, next) => {
   //   await newMessage.save()
   await Promise.all([conversastion.save(), newMessage.save()]);
   const receiver = getUserSocketId(receiverId)
-  io.to(receiver).emit("newMessage",newMessage)
-  res.status(200).send("message send successfully!!!");
+  if(receiver){
+    io.to(receiver).emit("newMessage",newMessage)
+    res.status(200).send("message send successfully!!!");
+  }
 
 });
 
 const getMessage = asyncHandler(async (req, res) => {
   const { id: receiverId } = req.params;
-  const {sender} = req.body
-  const senderId = sender;
+  const senderId = req.user._id;
   const conversastion = await Conversation.findOne({
-    users: { $in: [senderId, receiverId]},
+    users: { $all: [senderId, receiverId]},
   }).populate("messages");
   if (!conversastion) {
     res.status(400).send("messeges not found");

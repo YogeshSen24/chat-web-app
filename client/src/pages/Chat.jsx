@@ -32,7 +32,7 @@ function Chat() {
     } catch (error) {
       console.log(error);
     }
-  },[message])
+  },[])
   const fetchReceiverData = useCallback( async () => {
     try {
       let res = await axios.get(
@@ -44,7 +44,7 @@ function Chat() {
     } catch (error) {
       console.log(error);
     }
-  },[message])
+  },[])
   const sendMessage = useCallback( async () => {
     try {
       await axios.post(`/api/message/send/${receiver}`, {
@@ -57,7 +57,7 @@ function Chat() {
     } catch (error) {
       console.log(error);
     }
-  },[message])
+  },[])
 
   const { mutateAsync } = useMutation({
     mutationFn: sendMessage,
@@ -70,7 +70,7 @@ function Chat() {
   useEffect(() => {
     fetchConversation();
     fetchReceiverData();
-  }, [socket]);
+  }, [socket ]);
   socket?.on(
     "newMessage",
     (newMessage) => {
