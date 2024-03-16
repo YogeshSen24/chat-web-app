@@ -19,14 +19,13 @@ const sendMessage = asyncHandler(async (req, res, next) => {
   const newMessage = new Message({
     senderId,
     receiverId,
-    message,
+    message : String(message),
   });
   if (newMessage) {
     conversastion.messages.push(newMessage._id);
   }
-  //   await conversastion.save()
-  //   await newMessage.save()
-  await Promise.all([conversastion.save(), newMessage.save()]);
+    await conversastion.save()
+    await newMessage.save()
   const receiver = getUserSocketId(receiverId)
   if(receiver){
     io.to(receiver).emit("newMessage",newMessage)
