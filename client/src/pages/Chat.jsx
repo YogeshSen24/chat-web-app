@@ -59,14 +59,6 @@ function Chat() {
     }
   },[receiver])
 
-  const { mutateAsync } = useMutation({
-    mutationFn: sendMessage,
-  });
-
-  const onSend = () => {
-    mutateAsync();
-  };
-
   useEffect(() => {
     setConversation([])
     fetchConversation();
@@ -121,7 +113,7 @@ function Chat() {
           onChange={(e) => setMessage(e.target.value)}
         />
         <button
-          onClick={onSend}
+          onClick={sendMessage}
           className=" rounded-full p-2 btn aspect-square text-2xl"
         >
           <FiSend />
