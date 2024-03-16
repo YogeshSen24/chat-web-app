@@ -14,6 +14,7 @@ const messageSchema = new Schema({
     },
     message : {
         type : String,
+        require : [true , "message can not be empty string"]
     }
 },{timestamps:true})
 
